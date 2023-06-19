@@ -1,0 +1,89 @@
+cabal-version:      2.4
+name:               confcsr
+version:            0.1.0.0
+synopsis:           Confluence Tool for Context-Sensitive Rewriting
+
+-- A longer description of the package.
+-- description:
+
+-- A URL where users can report bugs.
+-- bug-reports:
+license:
+author:             Filip Stevanovic
+
+-- An email address to which users can send suggestions, bug reports, and patches.
+-- maintainer:
+
+-- A copyright notice.
+-- copyright:
+-- category:
+extra-source-files: README.md
+
+common deps
+  build-depends:
+    , base            ^>=4.16.4.0
+    , containers      ^>=0.6.5.1
+    , term-rewriting  ^>=0.4.0.2
+
+library confcsr-lib
+  import:           deps
+  hs-source-dirs:   src
+  build-depends:
+    , cmdargs        ^>=0.10.22
+    , directory
+    , filepath
+    , parsec         ^>=3.1.16.1
+    , text
+    , temporary
+    , typed-process  ^>=0.2.11.0
+
+  exposed-modules:
+    Arguments
+    Data.Rewriting.Mu.CriticalPair
+    Data.Rewriting.Mu.Joinability
+    Data.Rewriting.Mu.Problem.Parse
+    Data.Rewriting.Mu.Problem.Type
+    Data.Rewriting.Mu.Processor.ConfluenceProcessor
+    Data.Rewriting.Mu.Processor.EmptyProcessor
+    Data.Rewriting.Mu.Processor.RedundancyProcessor
+    Data.Rewriting.Mu.Processor.OrthogonalityProcessor
+    Data.Rewriting.Mu.Processor.Result
+    Data.Rewriting.Mu.Processor.State
+    Data.Rewriting.Mu.Processor.Type
+    Data.Rewriting.Mu.ReplacementMap
+    Data.Rewriting.Mu.Rewrite
+    Data.Rewriting.Mu.Termination.TerminationTool
+    Lib
+    Util
+
+  default-language: Haskell2010
+
+executable confcsr
+  import:           deps
+  hs-source-dirs:   app
+  main-is:          Main.hs
+  other-modules:    Examples
+  build-depends:    confcsr-lib
+  default-language: Haskell2010
+
+test-suite spec
+  import:             deps
+  type:               exitcode-stdio-1.0
+  main-is:            Spec.hs
+  hs-source-dirs:     test
+  build-depends:
+    , confcsr-lib
+    , hspec        ^>=2.11.0
+
+  other-modules:
+    Data.Rewriting.Mu.CriticalPairSpec
+    Data.Rewriting.Mu.JoinabilitySpec
+    Data.Rewriting.Mu.Problem.ParseSpec
+    Data.Rewriting.Mu.Processor.ConfluenceProcessorSpec
+    Data.Rewriting.Mu.Processor.OrthogonalityProcessorSpec
+    Data.Rewriting.Mu.ReplacementMapSpec
+    Data.Rewriting.Mu.RewriteSpec
+    SpecUtil
+
+  default-language:   Haskell2010
+  build-tool-depends: hspec-discover:hspec-discover >=2 && <3
