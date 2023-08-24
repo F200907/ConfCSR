@@ -40,7 +40,8 @@ prettyMu mu = "(REPLACEMENT-MAP" ++ Map.foldlWithKey pretty' "\n" mu ++ ")"
   where
     pretty' string symbol arity = string ++ "\t(" ++ prettyString symbol ++ (if null arity then "" else ' ' : set) ++ ")\n"
       where
-        set = intercalate ", " (map prettyString $ Set.toList arity)
+        arity' = map (+1) (Set.toList arity)
+        set = intercalate ", " (map prettyString $ arity')
 
 expandSymbols :: (Ord f) => ReplacementMap f -> [Rule f v] -> ReplacementMap f
 expandSymbols mu rules = foldl expandSymbols' mu symbols
